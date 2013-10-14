@@ -18,26 +18,27 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author Kyle
  */
-@ServerEndpoint("/game")
+@ServerEndpoint(value="/game", encoders={CoordinatesEncoder.class}, decoders={CoordinatesDecoder.class})
 public class GameWebSocketEndpoint {
     
     private static Set<Session> players = Collections.synchronizedSet(new HashSet<Session>());
 
     @OnMessage
-    public String onMessage(String message) {
-        return null;
+    public String onMessage(Coordinates message, Session session) {
+        System.out.println(message);
+        return message.getJson().toString();
     }
 
     @OnClose
     public void onClose(Session s) {
         players.remove(s);
-        System.out.println("Player left the game. Number of players: " + players.size());
+        System.out.println("Player left the game. # of players: " + players.size());
     }
 
     @OnOpen
     public void onOpen(Session s) {
         players.add(s);
-        System.out.println("Player connected to game. Number of players: " + players.size());
+        System.out.println("Player connected to game. # of players: " + players.size());
     }
 
     @OnError

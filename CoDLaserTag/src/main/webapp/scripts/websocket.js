@@ -5,13 +5,10 @@
 var wsUri = "ws://" + document.location.host + document.location.pathname 
         + "game";
 
-function connect()  {
-    var websocket = new WebSocket(wsUri);
-
-    websocket.onerror = function(evt) { onError(evt);  };
-    websocket.onopen = function(evt)    { onOpen(evt);   };
-    websocket.onmessage = function(evt) { onMessage(evt);   };
-}
+var websocket = new WebSocket(wsUri);
+websocket.onerror = function(evt) { onError(evt);  };
+websocket.onopen = function(evt)    { onOpen(evt);   };
+websocket.onmessage = function(evt) { onMessage(evt);   };
 
 function writeToScreen(message) {
     output.innerHTML += message + "<br />";
@@ -32,5 +29,4 @@ function sendText(json) {
 
 function onMessage(evt) {
     console.log("received: " + evt.data);
-    drawImageText(evt.data);
 }

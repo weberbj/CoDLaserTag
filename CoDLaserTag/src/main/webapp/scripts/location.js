@@ -13,8 +13,14 @@ function getLocation()  {
 }
 
 function showPosition(position) {
-    x.innerHTML="Latitude: " + position.coords.latitude + 
-            " <br />Longitude: " + position.coords.longitude + 
-            "<br />Accuracy: " + position.coords.accuracy;
+    x.innerHTML += "Latitude: " + position.coords.latitude + 
+            "<br />Longitude: " + position.coords.longitude + 
+            "<br />Accuracy: " + position.coords.accuracy +
+            "<br />";
+    var coordinates = JSON.stringify(
+        {   "longitude": position.coords.longitude, 
+            "latitude": position.coords.latitude, 
+            "accuracy": position.coords.accuracy});
+    sendText(coordinates); 
 }
 
