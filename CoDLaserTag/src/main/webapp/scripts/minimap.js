@@ -11,6 +11,7 @@ var degree_range = minimap_size * degrees_per_foot;
 var minimap_range = {"min_latitude":0,"max_latitude":100,"min_longitude":0,"max_longitude":100};
 
 function updateMap() {
+    minimap_context.clearRect(0,0,minimap.height, minimap.width);
     var coord = JSON.parse(getCoordinates());
     minimap_range.min_latitude = coord.latitude - degree_range;
     minimap_range.max_latitude = coord.latitude + degree_range;
