@@ -29,4 +29,6 @@ function sendText(json) {
 
 function onMessage(evt) {
     console.log("received: " + evt.data);
+    var json = JSON.parse(evt.data);
+    addPlayerToMap(json.latitude, json.longitude, false);
 }

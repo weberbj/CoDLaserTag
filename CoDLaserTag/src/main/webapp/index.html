@@ -6,13 +6,15 @@
     </head>
     <body>
         <h1>Play a game in the real world</h1>
-        <h2>Here is some text - 2</h2>
-        <button onclick="startGame();">Connect to the Server</button>
-        
+        <h2>Click the button below the begin</h2>
+        <canvas id="minimap" width="200" height="200" style="border:1px solid #000000"></canvas>
+        <br />
+        <button onclick="startGame()">Start</button>
         <div id="output"></div>
         <div id="location"></div>
         <script type="text/javascript" src="scripts/websocket.js"></script>
         <script type="text/javascript" src="scripts/location.js"></script>
         <script type="text/javascript" src="scripts/game.js"></script>
+        <script type="text/javascript" src="scripts/minimap.js"></script>
     </body>
 </html>

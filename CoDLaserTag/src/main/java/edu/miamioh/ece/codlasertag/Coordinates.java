@@ -52,8 +52,8 @@ public class Coordinates {
     
     public Coordinates(JsonObject json) {
         this.json = json;
-        this.longitude = json.getInt("longitude");
-        this.latitude = json.getInt("latitude");
+        this.longitude = json.getJsonNumber("longitude").doubleValue();
+        this.latitude = json.getJsonNumber("latitude").doubleValue();
         this.accuracy = json.getInt("accuracy");
     }
     

@@ -3,6 +3,7 @@
  */
 
 var x = document.getElementById("location");
+var current_coordinates;
 function getLocation()  {
     if (navigator.geolocation)  {
         navigator.geolocation.watchPosition(showPosition);
@@ -13,14 +14,19 @@ function getLocation()  {
 }
 
 function showPosition(position) {
-    x.innerHTML += "Latitude: " + position.coords.latitude + 
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
             "<br />Longitude: " + position.coords.longitude + 
             "<br />Accuracy: " + position.coords.accuracy +
             "<br />";
-    var coordinates = JSON.stringify(
+    current_coordinates = JSON.stringify(
         {   "longitude": position.coords.longitude, 
             "latitude": position.coords.latitude, 
             "accuracy": position.coords.accuracy});
-    sendText(coordinates); 
+    sendText(current_coordinates); 
+    updateMap();
+}
+
+function getCoordinates()   {
+    return current_coordinates;
 }
 

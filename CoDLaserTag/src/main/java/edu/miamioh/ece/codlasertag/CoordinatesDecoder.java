@@ -21,7 +21,6 @@ public class CoordinatesDecoder implements Decoder.Text<Coordinates>    {
     @Override
     public Coordinates decode(String arg0) throws DecodeException {
         JsonObject jsonObject = Json.createReader(new StringReader(arg0)).readObject();
-        System.out.println(jsonObject.toString());
         return  new Coordinates(jsonObject);
     }
 
