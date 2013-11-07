@@ -27,7 +27,7 @@ import javax.websocket.server.ServerEndpoint;
         decoders={edu.miamioh.ece.codlasertag.player.PlayerDecoder.class})
 public class GameWebSocketEndpoint {
     
-    private static final int TIMEOUT_VAL = 1000;
+    private static final int TIMEOUT_VAL = 3000;
     private static Random rnd = new Random();
     
     private static Map<Session, edu.miamioh.ece.codlasertag.player.Player> players 
@@ -36,7 +36,7 @@ public class GameWebSocketEndpoint {
     @OnMessage
     public String onMessage(edu.miamioh.ece.codlasertag.player.Player message, Session session) throws IOException {
         if (!players.containsKey(session))
-            return "Error: Timeout";
+            return "Error: Player not in session";
         edu.miamioh.ece.codlasertag.player.Player currentPlayer = players.get(session);
         currentPlayer.setCoord(message.getCoord());
         currentPlayer.setHealth(message.getHealth());
@@ -48,12 +48,13 @@ public class GameWebSocketEndpoint {
         String rv = "[";
         for (Session s : players.keySet())  {
             edu.miamioh.ece.codlasertag.player.Player readPlayer = players.get(s);
- /*           if (readPlayer.getLastUpdate().getTime() > (new Date().getTime() + TIMEOUT_VAL))    {
+            if ( (new Date().getTime() - readPlayer.getLastUpdate().getTime() ) > TIMEOUT_VAL)    {
                 players.remove(s);
                 s.getBasicRemote().sendText("Error: Timeout");
+                System.out.println("Player left");
                 continue;
             }
-  */          if (readPlayer.getJson() != null)
+            if (readPlayer.getJson() != null)
                 rv += readPlayer.getJson() + ",";
         }
         rv = rv.substring(0,rv.length()-1) + "]";

@@ -8,7 +8,7 @@ var pushInterval;
 function startGame()    {
     openConnectionToServer();
     startWatchingLocation();
-    pushInterval = setInterval(sendAndReceiveData, 10);
+    pushInterval = setInterval(sendAndReceiveData, 100);
 }
 
 function sendAndReceiveData()   {
