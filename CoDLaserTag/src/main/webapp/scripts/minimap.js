@@ -12,14 +12,11 @@ var minimap_range = {"min_latitude":0,"max_latitude":100,"min_longitude":0,"max_
 
 function updateMap() {
     minimap_context.clearRect(0,0,minimap.height, minimap.width);
-    var coord = JSON.parse(getCoordinates());
-    minimap_range.min_latitude = coord.latitude - degree_range;
-    minimap_range.max_latitude = coord.latitude + degree_range;
-    minimap_range.min_longitude = coord.longitude - degree_range;
-    minimap_range.max_longitude = coord.longitude + degree_range;
-    console.log(minimap_range.max_latitude - minimap_range.min_latitude);
-    console.log(JSON.stringify(minimap_range));
-    addPlayerToMap(coord.latitude,coord.longitude,true);
+    minimap_range.min_latitude = playerCurrentLocation.latitude - degree_range;
+    minimap_range.max_latitude = playerCurrentLocation.latitude + degree_range;
+    minimap_range.min_longitude = playerCurrentLocation.longitude - degree_range;
+    minimap_range.max_longitude = playerCurrentLocation.longitude + degree_range;
+    addPlayerToMap(playerCurrentLocation.latitude,playerCurrentLocation.longitude,true);
 }
 
 function addPlayerToMap(latitude, longitude, friendly)   {

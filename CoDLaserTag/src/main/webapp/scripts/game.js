@@ -3,6 +3,15 @@
  * and open the template in the editor.
  */
 
+var pushInterval;
+
 function startGame()    {
-    getLocation();
+    openConnectionToServer();
+    startWatchingLocation();
+    pushInterval = setInterval(sendAndReceiveData, 10);
+}
+
+function sendAndReceiveData()   {
+   if (playerCurrentLocation !== null)
+        sendText(convertCurrPlayerToJSON());
 }
