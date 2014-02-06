@@ -11,7 +11,7 @@ import javax.websocket.Session;
 
 /**
  * Represents a game session 
- * @author kylerogers
+ * @author Kyle Rogers
  */
 public class Game {
     
@@ -73,5 +73,9 @@ public class Game {
         catch (IOException e)   {}
         players.put(playerSession, p);
         System.out.println("Player connected to game. # of players: " + players.size());
+    }
+    
+    public int getNumberOfConnectedPlayers()    {
+        return players.size();
     }
 }

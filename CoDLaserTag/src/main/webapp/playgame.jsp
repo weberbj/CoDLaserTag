@@ -1,3 +1,10 @@
+<%-- 
+    Document   : playgame
+    Created on : Feb 6, 2014, 1:32:16 PM
+    Author     : kylerogers
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,7 +25,7 @@
         <br />
         <div id="output"></div>
         <div id="location"></div>
-        <button onclick="startGame();">Start!</button>
+        <button onclick="startGame();">Join Game</button>
         <script type="text/javascript" src="scripts/lib/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="scripts/websocket.js"></script>
         <script type="text/javascript" src="scripts/location.js"></script>
@@ -26,17 +33,6 @@
         <script type="text/javascript" src="scripts/minimap.js"></script>
         <script type="text/javascript" src="scripts/player.js"></script>
         <script type="text/javascript"></script>
-        <script id="begingame" type="text/javascript">
-            $(document).ready(function () {
-         //       startGame();
-            });
-            var playerArray = [];
-            for (var i = 0 ; i < 10 ; i++)  {
-                var p = {"health":100, "coord":{"x":i,"y":10-i}, "team":"red"};
-                playerArray.push(p);
-            }
-            var json = JSON.stringify(playerArray);
-            var j = JSON.parse(json);
-        </script>
     </body>
 </html>
+

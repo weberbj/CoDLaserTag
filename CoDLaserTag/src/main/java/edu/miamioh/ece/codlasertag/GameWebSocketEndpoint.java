@@ -5,11 +5,6 @@
 package edu.miamioh.ece.codlasertag;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -18,6 +13,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import edu.miamioh.ece.codlasertag.game.Game;
+import edu.miamioh.ece.codlasertag.game.GameServer;
 
 
 /**
@@ -29,21 +25,25 @@ import edu.miamioh.ece.codlasertag.game.Game;
         decoders={edu.miamioh.ece.codlasertag.player.PlayerDecoder.class})
 public class GameWebSocketEndpoint {
     
-    public Game game = new Game();
+    static int id;
+    
+    static {
+        id = GameServer.getInstance().addGame(new Game());
+    }
     
     @OnMessage
     public String onMessage(edu.miamioh.ece.codlasertag.player.Player message, Session session) throws IOException {
-        return game.update(session, message);
+        return GameServer.getInstance().getGameById(id).update(session, message);
     }
 
     @OnClose
     public void onClose(Session s) {
-        game.removePlayer(s);
+        GameServer.getInstance().getGameById(id).removePlayer(s);
     }
 
     @OnOpen
     public void onOpen(Session s) throws IOException {
-        game.connectPlayer(s);
+        GameServer.getInstance().getGameById(id).connectPlayer(s);
     }
 
     @OnError

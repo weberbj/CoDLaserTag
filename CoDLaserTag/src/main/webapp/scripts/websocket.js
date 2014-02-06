@@ -2,7 +2,8 @@
  * This script handles the WebSocket connection to the server.
  */
 
-var wsUri = "ws://" + document.location.host + document.location.pathname + "game";
+var loc = document.location.pathname;
+var wsUri = "ws://" + document.location.host + loc.substring(0, loc.lastIndexOf('/')) + "/game";
 var websocket;
 
 function openConnectionToServer()   {
