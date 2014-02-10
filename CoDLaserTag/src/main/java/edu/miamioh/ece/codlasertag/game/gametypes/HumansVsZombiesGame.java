@@ -12,6 +12,11 @@ import edu.miamioh.ece.codlasertag.game.Game;
  *
  * @author kylerogers
  */
-public class HumansVsZombies extends Game {
+public class HumansVsZombiesGame extends Game {
+
+    @Override
+    protected void updateGame() {
+        
+    }
     
 }
