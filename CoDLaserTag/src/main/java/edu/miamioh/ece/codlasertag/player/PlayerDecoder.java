@@ -5,11 +5,8 @@
 package edu.miamioh.ece.codlasertag.player;
 
 import java.io.StringReader;
-import java.util.List;
-import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonException;
-import javax.json.JsonObject;
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
