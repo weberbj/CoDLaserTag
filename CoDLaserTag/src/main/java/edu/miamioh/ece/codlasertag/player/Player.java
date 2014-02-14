@@ -13,7 +13,7 @@ import javax.json.JsonObject;
  *
  * @author Kyle
  */
-public class Player {
+public class Player implements Comparable<Player>   {
     private Coordinates coord;
     private String team;
     private int health, id;
@@ -99,5 +99,10 @@ public class Player {
         this.coord = new Coordinates(Json.createReader(new StringReader(s)).readObject());
         this.team = json.getString("team");
         this.health = json.getInt("health");
+    }
+
+    @Override
+    public int compareTo(Player o) {
+        return this.id - o.id;
     }
 }
