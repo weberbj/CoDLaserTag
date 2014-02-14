@@ -20,7 +20,7 @@ public abstract class Game {
     protected static Map<Session, edu.miamioh.ece.codlasertag.player.Player> players 
             = Collections.synchronizedMap(new HashMap<Session, edu.miamioh.ece.codlasertag.player.Player>());
     
-    public static final int TIMEOUT_VAL = 3000;
+    public static final int TIMEOUT_VAL = 3000; // In milliseconds
     private static final Random rnd = new Random();
     
     /**
@@ -29,7 +29,7 @@ public abstract class Game {
      * @param receivedPlayerObject Player object that the client sent
      * @return 
      */
-    public String update(Session playerSession, edu.miamioh.ece.codlasertag.player.Player receivedPlayerObject) {
+    public final String update(Session playerSession, edu.miamioh.ece.codlasertag.player.Player receivedPlayerObject) {
         if (!players.containsKey(playerSession))
             return "Error: Player not in session";
         updatePlayer(playerSession, receivedPlayerObject);
@@ -108,6 +108,7 @@ public abstract class Game {
         }
         catch (IOException e)   {}
         players.put(playerSession, p);
+        assignTeam(p);
         System.out.println("Player connected to game. # of players: " + players.size());
     }
     
@@ -120,8 +121,27 @@ public abstract class Game {
     }
     
     /**
+     * Assigns players to a team. Default behavior is to assign equal sized teams.
+     * @param player 
+     */
+    protected void assignTeam(edu.miamioh.ece.codlasertag.player.Player player)    {
+        String smallestTeam = "";
+        int smallestTeamSize = Integer.MAX_VALUE;
+        for (String teamName : teams.keySet())   {
+            int size = teams.get(teamName).size();
+            if (size < smallestTeamSize)  {
+                smallestTeam = teamName;
+                smallestTeamSize = size;
+            }
+        }
+        player.setTeam(smallestTeam);
+        teams.get(smallestTeam).addPlayer(player);
+    }
+    
+    /**
      * This should update the game's current state. This is run every single time
      * that a player sends an update to the server.
      */
     protected abstract void updateGame();
+    
 }
