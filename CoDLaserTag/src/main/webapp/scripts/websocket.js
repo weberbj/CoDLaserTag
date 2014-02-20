@@ -37,7 +37,7 @@ function onMessage(evt) {
         updateMap();
         for (var i = 0 ; i < json.length ; i++) {
             var otherPlayer = json[i];
-            var coords = JSON.parse(otherPlayer.coords);
+            var coords = otherPlayer.coords;
             if (otherPlayer.id !== playerId)    {
                 addPlayerToMap(coords.latitude, coords.longitude, otherPlayer.team === playerTeam);
             }
