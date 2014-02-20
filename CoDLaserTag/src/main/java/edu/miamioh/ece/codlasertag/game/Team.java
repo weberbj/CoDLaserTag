@@ -16,7 +16,7 @@ import java.util.HashSet;
  * @author kylerogers
  */
 public class Team {
-    private Set<Player> players;
+    private final Set<Player> players;
     private String name;
     
     public Team(String name)   {
