@@ -35,7 +35,9 @@ function onMessage(evt) {
     else {
         var json = JSON.parse(evt.data);
         updateMap();
-        for (var i = 0 ; i < json.length ; i++) {
+        playerTeam = json[0].team;
+        playerHealth = json[0].health;
+        for (var i = 1 ; i < json.length ; i++) {
             var otherPlayer = json[i];
             var coords = otherPlayer.coords;
             if (otherPlayer.id !== playerId)    {
