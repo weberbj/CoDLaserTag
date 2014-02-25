@@ -12,8 +12,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import edu.miamioh.ece.codlasertag.game.Game;
 import edu.miamioh.ece.codlasertag.game.GameServer;
+import edu.miamioh.ece.codlasertag.game.gametypes.HumansVsZombiesGame;
 
 
 /**
@@ -28,22 +28,22 @@ public class GameWebSocketEndpoint {
     static int id;
     
     static {
-        id = GameServer.getInstance().addGame(new Game());
+        id = GameServer.getInstance().addGame(new HumansVsZombiesGame());
     }
     
     @OnMessage
     public String onMessage(edu.miamioh.ece.codlasertag.player.Player message, Session session) throws IOException {
-        return GameServer.getInstance().getGameById(id).update(session, message);
+        return GameServer.getInstance().updateGame(session, message);
     }
 
     @OnClose
     public void onClose(Session s) {
-        GameServer.getInstance().getGameById(id).removePlayer(s);
+        GameServer.getInstance().removePlayerFromGame(s);
     }
 
     @OnOpen
     public void onOpen(Session s) throws IOException {
-        GameServer.getInstance().getGameById(id).connectPlayer(s);
+        GameServer.getInstance().connectPlayerToGame(s, id);
     }
 
     @OnError

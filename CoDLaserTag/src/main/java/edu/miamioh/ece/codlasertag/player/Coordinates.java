@@ -11,10 +11,14 @@ import javax.json.*;
  *
  * @author Kyle
  */
-public class Coordinates {
+public class Coordinates    {
     private double latitude, longitude;
     private int accuracy;
     private JsonObject json;
+    
+    public Coordinates copy() {
+        return new Coordinates(this.json);
+    }
 
     public JsonObject getJson() {
         return json;

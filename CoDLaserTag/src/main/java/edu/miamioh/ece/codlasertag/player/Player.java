@@ -13,13 +13,28 @@ import javax.json.JsonObject;
  *
  * @author Kyle
  */
-public class Player {
+public class Player implements Comparable<Player>   {
     private Coordinates coord;
     private String team;
     private int health, id;
     private Date lastUpdate;
     JsonObject json;
+    
+    private void updateJson()   {
+        json = Json.createObjectBuilder()
+                .add("team", team)
+                .add("health", health)
+                .add("coords", coord.getJson())
+                .build();
+    }
 
+    public Player copy() {
+        Player p = new Player();
+        p.setFieldsFromJson(this.json);
+        p.lastUpdate = (Date) this.lastUpdate.clone();
+        return p;
+    }
+    
     public Date getLastUpdate() {
         return lastUpdate;
     }
@@ -53,6 +68,7 @@ public class Player {
     }
 
     public JsonObject getJson() {
+        updateJson();
         return json;
     }
 
@@ -65,7 +81,7 @@ public class Player {
     }
 
     public void setCoord(Coordinates coord) {
-        this.coord = coord;
+        this.coord = coord.copy();
     }
     
     public Player() {
@@ -73,12 +89,20 @@ public class Player {
     }
     
     public Player(JsonObject json)  {
-        this.json = json;
         lastUpdate = new Date();
-    //    this.coord = new Coordinates(json.getJsonObject("coords"));
+        setFieldsFromJson(json);
+    }
+    
+    private void setFieldsFromJson(JsonObject json) {
+        this.json = json;
         String s = json.getString("coords");
         this.coord = new Coordinates(Json.createReader(new StringReader(s)).readObject());
         this.team = json.getString("team");
         this.health = json.getInt("health");
+    }
+
+    @Override
+    public int compareTo(Player o) {
+        return this.id - o.id;
     }
 }
