@@ -1,7 +1,9 @@
 package edu.miamioh.ece.codlasertag.game;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -32,6 +34,19 @@ public class GameServer {
     
     public Game getGameById(int id)  {
         return gamesInSession.get(id);
+    }
+    
+    public int size()   {
+        return gamesInSession.size();
+    }
+    
+    public List<GameEntity> getGameEntities()   {
+        List<GameEntity> games = new ArrayList<>();
+        for (Integer key : gamesInSession.keySet()) {
+            Game g = gamesInSession.get(key);
+            games.add( new GameEntity("a name", g.getGameTypeName(), g.size(), key));
+        }
+        return games;
     }
     
     /**

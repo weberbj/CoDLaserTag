@@ -146,4 +146,8 @@ public abstract class Game {
     
     protected abstract String getGameTypeName();
     
+    public int size() {
+        return players.size();
+    }
+    
 }
