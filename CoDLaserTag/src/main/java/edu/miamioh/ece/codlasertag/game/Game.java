@@ -144,4 +144,6 @@ public abstract class Game {
      */
     protected abstract void updateGame();
     
+    protected abstract String getGameTypeName();
+    
 }

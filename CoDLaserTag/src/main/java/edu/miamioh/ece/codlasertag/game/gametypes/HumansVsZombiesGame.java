@@ -27,5 +27,10 @@ public class HumansVsZombiesGame extends Game {
     protected void updateGame() {
         
     }
+
+    @Override
+    protected String getGameTypeName() {
+        return "Humans vs Zombies";
+    }
     
 }
