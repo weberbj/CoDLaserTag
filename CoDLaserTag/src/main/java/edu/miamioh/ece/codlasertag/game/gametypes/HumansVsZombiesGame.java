@@ -17,10 +17,12 @@ public class HumansVsZombiesGame extends Game {
     
     public static final String ZOMBIES = "zombies";
     public static final String HUMANS = "humans";
+    public static final String GAME_TYPE = "Humans Vs Zombies";
     
-    public HumansVsZombiesGame()    {
+    public HumansVsZombiesGame(String gameName)    {
         this.teams.put(ZOMBIES, new Team(ZOMBIES));
         this.teams.put(HUMANS, new Team(HUMANS));
+        super.gameName = gameName;
     }
 
     @Override
@@ -30,7 +32,12 @@ public class HumansVsZombiesGame extends Game {
 
     @Override
     protected String getGameTypeName() {
-        return "Humans vs Zombies";
+        return GAME_TYPE;
+    }
+
+    @Override
+    protected String getName() {
+        return gameName;
     }
     
 }

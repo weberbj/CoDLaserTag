@@ -8,6 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.List"%>
 <%@page import="edu.miamioh.ece.codlasertag.game.*"%>
+<%@page import="edu.miamioh.ece.codlasertag.game.gametypes.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <% 
@@ -42,6 +43,16 @@
             <% } %>
             
         </table>
+
+        <br />
+        Create a new Game
+        <form action="creategame.jsp" method="POST">
+            Game Name: <input type="text" name="gamename" />
+            Game Type: <select name="gametype">
+                <option value="humansvszombies">Humans vs Zombies</option>
+            </select>
+            <input type="submit" value="Submit" />
+        </form>
         
     </body>
 </html>

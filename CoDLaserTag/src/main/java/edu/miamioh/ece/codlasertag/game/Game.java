@@ -21,6 +21,7 @@ public abstract class Game {
             = Collections.synchronizedMap(new HashMap<Session, edu.miamioh.ece.codlasertag.player.Player>());
     
     public static final int TIMEOUT_VAL = 3000; // In milliseconds
+    protected String gameName;
     private static final Random rnd = new Random();
     
     /**
@@ -145,6 +146,8 @@ public abstract class Game {
     protected abstract void updateGame();
     
     protected abstract String getGameTypeName();
+    
+    protected abstract String getName();
     
     public int size() {
         return players.size();

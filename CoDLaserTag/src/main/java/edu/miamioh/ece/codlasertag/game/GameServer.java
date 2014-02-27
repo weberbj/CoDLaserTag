@@ -44,7 +44,7 @@ public class GameServer {
         List<GameEntity> games = new ArrayList<>();
         for (Integer key : gamesInSession.keySet()) {
             Game g = gamesInSession.get(key);
-            games.add( new GameEntity("a name", g.getGameTypeName(), g.size(), key));
+            games.add( new GameEntity(g.getName(), g.getGameTypeName(), g.size(), key));
         }
         return games;
     }

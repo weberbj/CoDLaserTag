@@ -12,10 +12,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import edu.miamioh.ece.codlasertag.game.Game;
 import edu.miamioh.ece.codlasertag.game.GameServer;
 import edu.miamioh.ece.codlasertag.game.gametypes.HumansVsZombiesGame;
-
 
 /**
  *
@@ -29,7 +27,7 @@ public class GameWebSocketEndpoint {
     static int id;
     
     static {
-        id = GameServer.getInstance().addGame(new HumansVsZombiesGame());
+        id = GameServer.getInstance().addGame(new HumansVsZombiesGame("a name"));
     }
     
     @OnMessage
