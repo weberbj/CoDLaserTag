@@ -32,13 +32,15 @@
                 <td># of Players</td>
                 <td>Game ID</td>
             </tr>
-            <%
-                String placeholder = "<tr><td>%s</td><td>%s</td><td>%d</td><td>%d</td></tr>";
-                for (GameEntity ge : gamesList) {
-                    out.print(String.format(placeholder, ge.getGameName(), ge.getGameTypeName(), ge.getNumPlayers(), ge.getId()));
-                    
-                }
-            %>
+            <% for (GameEntity ge : gamesList)   { %>
+            <tr>
+                <td><%= ge.getGameName() %></td>
+                <td><%= ge.getGameTypeName() %></td>
+                <td><%= ge.getNumPlayers() %></td>
+                <td><%= ge.getId() %></td>
+            </tr>
+            <% } %>
+            
         </table>
         
     </body>
