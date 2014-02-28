@@ -1,8 +1,10 @@
 package edu.miamioh.ece.codlasertag.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -14,6 +16,7 @@ import java.util.Random;
 public class GameServer {
     
     private static final GameServer instance;
+    private static final int GAME_TIMEOUT = 10000;
 
     public static GameServer getInstance() {
         return instance;
@@ -42,10 +45,18 @@ public class GameServer {
     
     public List<GameEntity> getGameEntities()   {
         List<GameEntity> games = new ArrayList<>();
+        Collection<Integer> gamesToRemove = new HashSet<>();
         for (Integer key : gamesInSession.keySet()) {
             Game g = gamesInSession.get(key);
-            games.add( new GameEntity(g.getName(), g.getGameTypeName(), g.size(), key));
+            if (System.currentTimeMillis() > GAME_TIMEOUT + g.getLastUpdated()) {
+                gamesToRemove.add(key);
+            }
+            else    {
+                games.add( new GameEntity(g.getName(), g.getGameTypeName(), g.size(), key));
+            }
         }
+        for (Integer k : gamesToRemove) 
+            this.removeGame(k);
         return games;
     }
     

@@ -23,6 +23,11 @@ public abstract class Game {
     public static final int TIMEOUT_VAL = 3000; // In milliseconds
     protected String gameName;
     private static final Random rnd = new Random();
+    private long lastUpdated = System.currentTimeMillis();
+
+    public long getLastUpdated() {
+        return lastUpdated;
+    }
     
     /**
      * Updates the game
@@ -35,6 +40,7 @@ public abstract class Game {
             return "Error: Player not in session";
         updatePlayer(playerSession, receivedPlayerObject);
         updateGame();
+        lastUpdated = System.currentTimeMillis();
         return buildJSONArrayString();
     }
     
