@@ -46,7 +46,7 @@
 
         <br />
         Create a new Game
-        <form action="creategame.jsp" method="POST">
+        <form action="CreateGame" method="POST">
             Game Name: <input type="text" name="gamename" />
             Game Type: <select name="gametype">
                 <option value="humansvszombies">Humans vs Zombies</option>
