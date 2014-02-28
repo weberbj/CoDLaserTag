@@ -9,13 +9,22 @@ var playerHealth, playerCurrentLocation, playerTeam, playerId; // int, coords, s
 playerHealth = 100;
 playerTeam = "";
 playerCurrentLocation = null;
+var gameId = parseInt(getParameterByName("gameId"), 10);
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
 function convertCurrPlayerToJSON()  {
     return JSON.stringify({
         "health":playerHealth, 
         "coords":JSON.stringify(playerCurrentLocation), 
         "team":playerTeam, 
-        "id":playerId
+        "id":playerId,
+        "gameid":gameId
     });
 }
 

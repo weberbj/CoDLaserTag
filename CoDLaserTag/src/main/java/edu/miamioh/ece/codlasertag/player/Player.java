@@ -19,6 +19,7 @@ public class Player implements Comparable<Player>   {
     private int health, id;
     private Date lastUpdate;
     JsonObject json;
+    private int gameId;
     
     private void updateJson()   {
         json = Json.createObjectBuilder()
@@ -49,6 +50,10 @@ public class Player implements Comparable<Player>   {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public int getGameId()  {
+        return gameId;
     }
 
     public Coordinates getCoord() {
@@ -99,6 +104,7 @@ public class Player implements Comparable<Player>   {
         this.coord = new Coordinates(Json.createReader(new StringReader(s)).readObject());
         this.team = json.getString("team");
         this.health = json.getInt("health");
+        this.gameId = json.getInt("gameid");
     }
 
     @Override
