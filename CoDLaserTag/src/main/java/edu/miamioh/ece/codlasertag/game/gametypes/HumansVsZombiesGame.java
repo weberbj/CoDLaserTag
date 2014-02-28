@@ -22,20 +22,18 @@ public class HumansVsZombiesGame extends Game {
     
     public static final String ZOMBIES = "zombies";
     public static final String HUMANS = "humans";
-    public static final int RATIO = 1/6;
+    public static final double RATIO = 2.0;
     public static final double CHECK_DISTANCE = 10.0; //In Meters
     
     public HumansVsZombiesGame()    {
         this.teams.put(ZOMBIES, new Team(ZOMBIES));
         this.teams.put(HUMANS, new Team(HUMANS));
+        
     }
 
     @Override
     protected void updateGame() {
-        if(gameOver()){
-            //DO SOMETHING HERE TO STOP GAME
-        }
-        checkDistance();
+       // checkDistance();
     }
     
     void checkDistance(){
@@ -83,7 +81,13 @@ public class HumansVsZombiesGame extends Game {
     //Fow now uses a simple ratio defined as a constant above, RATIO.
     @Override
     protected void assignTeam(edu.miamioh.ece.codlasertag.player.Player player){
-        if(teams.get(HUMANS).size() != 0 && (double)teams.get(ZOMBIES).size()/(double)teams.get(HUMANS).size() < RATIO){
+        double humanSize = teams.get(HUMANS).size();
+        double zombieSize = teams.get(ZOMBIES).size();
+        System.out.println("Size of Zombie Team: " + zombieSize);
+        System.out.println("Size of Human Team: " + humanSize);
+        System.out.println(humanSize != 0.0);
+        System.out.println(zombieSize*RATIO < humanSize);
+        if(humanSize != 0.0 && zombieSize*RATIO < humanSize){
             player.setTeam(ZOMBIES);
             teams.get(ZOMBIES).addPlayer(player);
         }else{
