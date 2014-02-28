@@ -32,17 +32,17 @@ public class GameWebSocketEndpoint {
     
     @OnMessage
     public String onMessage(edu.miamioh.ece.codlasertag.player.Player message, Session session) throws IOException {
-        return GameServer.getInstance().getGameById(id).update(session, message);
+        return GameServer.getInstance().updateGame(session, message);
     }
 
     @OnClose
     public void onClose(Session s) {
-        GameServer.getInstance().getGameById(id).removePlayer(s);
+        GameServer.getInstance().removePlayerFromGame(s);
     }
 
     @OnOpen
     public void onOpen(Session s) throws IOException {
-        GameServer.getInstance().getGameById(id).connectPlayer(s);
+        GameServer.getInstance().connectPlayerToGame(s, id);
     }
 
     @OnError

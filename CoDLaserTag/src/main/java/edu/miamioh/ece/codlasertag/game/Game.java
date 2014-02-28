@@ -64,7 +64,7 @@ public abstract class Game {
     }
     
     /**
-     * Updates the current player in the hashamp.
+     * Updates the current player in the map
      * @param playerSession The player to be updated
      * @param receivedPlayerObject The player object that the client sent. This
      * will need to be verified.
@@ -111,9 +111,13 @@ public abstract class Game {
                 new edu.miamioh.ece.codlasertag.player.Player();
         p.setId(rnd.nextInt());
         try {
+            // Tell the player their ID
             playerSession.getBasicRemote().sendText(""+p.getId());
         }
-        catch (IOException e)   {}
+        catch (IOException e)   {
+            // If there has already been an issue communicating, don't add them to the game
+            return;
+        }
         players.put(playerSession, p);
         assignTeam(p);
         System.out.println("Player connected to game. # of players: " + players.size());

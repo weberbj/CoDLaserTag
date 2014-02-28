@@ -1,13 +1,13 @@
 package edu.miamioh.ece.codlasertag.game;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import edu.miamioh.ece.codlasertag.player.Player;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import javax.websocket.Session;
 
 /**
  *
@@ -15,28 +15,23 @@ import java.util.Random;
  */
 public class GameServer {
     
-    private static final GameServer instance;
-    private static final int GAME_TIMEOUT = 10000;
+    private static final GameServer instance = new GameServer();
+    private final Map<Integer, Game> activeGames;
+    private static final Random rnd = new Random();
+    private final Map<Session, Integer> activeSessions;
+
 
     public static GameServer getInstance() {
         return instance;
     }
     
-    private static final Random rnd;
-    
-    static {
-        instance = new GameServer();
-        rnd = new Random();
-    }
-    
-    private final Map<Integer, Game> gamesInSession;
-    
     private GameServer()    {
-        gamesInSession = Collections.synchronizedMap(new HashMap<Integer, Game>());
+        activeGames = Collections.synchronizedMap(new HashMap<Integer, Game>());
+        activeSessions = Collections.synchronizedMap(new HashMap<Session, Integer>());
     }
     
     public Game getGameById(int id)  {
-        return gamesInSession.get(id);
+        return activeGames.get(id);
     }
     
     public int size()   {
@@ -68,16 +63,30 @@ public class GameServer {
     public int addGame(Game game)    {
         int id = rnd.nextInt();
         synchronized (GameServer .class)    {
-            while (gamesInSession.containsKey(id))
+            while (activeGames.containsKey(id))
                 id = rnd.nextInt();
-            gamesInSession.put(id, game);
+            activeGames.put(id, game);
         }
         return id;
     }
     
     public boolean removeGame(int id)   {
-        gamesInSession.remove(id);
+        activeGames.remove(id);
         return true;
+    }
+    
+    public void connectPlayerToGame(Session sess, int gameId)   {
+        activeGames.get(gameId).connectPlayer(sess);
+        activeSessions.put(sess, gameId);
+    }
+    
+    public void removePlayerFromGame(Session sess)  {
+        activeGames.get(activeSessions.get(sess)).removePlayer(sess);
+        activeSessions.remove(sess);
+    }
+    
+    public String updateGame(Session sess, Player sentPlayerObject)    {
+        return activeGames.get(activeSessions.get(sess)).update(sess, sentPlayerObject);
     }
     
 }
