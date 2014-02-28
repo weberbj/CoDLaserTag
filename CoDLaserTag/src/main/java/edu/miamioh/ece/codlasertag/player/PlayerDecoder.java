@@ -16,8 +16,6 @@ import javax.websocket.EndpointConfig;
  * @author Kyle
  */
 public class PlayerDecoder implements Decoder.Text<Player> {
-
-    public static final String JSON_ARRAY_SPLIT_CHAR = "#";
     
     @Override
     public Player decode(String arg0) throws DecodeException {
