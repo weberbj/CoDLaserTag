@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "CreateGame", urlPatterns = {"/CreateGame"})
 public class CreateGame extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

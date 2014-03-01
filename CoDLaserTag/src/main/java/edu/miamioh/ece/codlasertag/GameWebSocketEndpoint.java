@@ -24,15 +24,9 @@ import edu.miamioh.ece.codlasertag.game.gametypes.HumansVsZombiesGame;
         decoders={edu.miamioh.ece.codlasertag.player.PlayerDecoder.class})
 public class GameWebSocketEndpoint {
     
-    static int id;
-    
-    static {
-        id = GameServer.getInstance().addGame(new HumansVsZombiesGame("a name"));
-    }
-    
     @OnMessage
     public String onMessage(edu.miamioh.ece.codlasertag.player.Player message, Session session) throws IOException {
-        return GameServer.getInstance().updateGame(session, message);
+        return GameServer.getInstance().update(session, message);
     }
 
     @OnClose
@@ -42,7 +36,7 @@ public class GameWebSocketEndpoint {
 
     @OnOpen
     public void onOpen(Session s) throws IOException {
-        GameServer.getInstance().connectPlayerToGame(s, id);
+        GameServer.getInstance().connectPlayerToServer(s);
     }
 
     @OnError

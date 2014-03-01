@@ -17,13 +17,22 @@ public abstract class Game {
     protected Map<String, edu.miamioh.ece.codlasertag.game.Team> teams
             = Collections.synchronizedMap(new HashMap<String, edu.miamioh.ece.codlasertag.game.Team>());
         
-    protected static Map<Session, edu.miamioh.ece.codlasertag.player.Player> players 
+    protected Map<Session, edu.miamioh.ece.codlasertag.player.Player> players 
             = Collections.synchronizedMap(new HashMap<Session, edu.miamioh.ece.codlasertag.player.Player>());
     
     public static final int TIMEOUT_VAL = 3000; // In milliseconds
     protected String gameName;
     private static final Random rnd = new Random();
     private long lastUpdated = System.currentTimeMillis();
+    private int id;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public long getLastUpdated() {
         return lastUpdated;
@@ -120,7 +129,7 @@ public abstract class Game {
         }
         players.put(playerSession, p);
         assignTeam(p);
-        System.out.println("Player connected to game. # of players: " + players.size());
+        System.out.println("Player connected to game" + p.getGameId() +  ". # of players: " + players.size());
     }
     
     /**
