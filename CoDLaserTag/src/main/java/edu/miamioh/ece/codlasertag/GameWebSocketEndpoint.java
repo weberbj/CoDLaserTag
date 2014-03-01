@@ -13,7 +13,6 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import edu.miamioh.ece.codlasertag.game.GameServer;
-import edu.miamioh.ece.codlasertag.game.gametypes.HumansVsZombiesGame;
 
 /**
  *
@@ -26,17 +25,17 @@ public class GameWebSocketEndpoint {
     
     @OnMessage
     public String onMessage(edu.miamioh.ece.codlasertag.player.Player message, Session session) throws IOException {
-        return GameServer.getInstance().update(session, message);
+        return GameServer.update(session, message);
     }
 
     @OnClose
     public void onClose(Session s) {
-        GameServer.getInstance().removePlayerFromGame(s);
+        GameServer.removePlayerFromGame(s);
     }
 
     @OnOpen
     public void onOpen(Session s) throws IOException {
-        GameServer.getInstance().connectPlayerToServer(s);
+        GameServer.connectPlayerToServer(s);
     }
 
     @OnError

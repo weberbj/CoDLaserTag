@@ -63,7 +63,7 @@ public class CreateGame extends HttpServlet {
             return;
         }
 
-        gameId = GameServer.getInstance().addGame(gameToBeAdded);
+        gameId = GameServer.addGame(gameToBeAdded);
         response.sendRedirect("playgame.jsp?gameId=" + gameId);
     }
 

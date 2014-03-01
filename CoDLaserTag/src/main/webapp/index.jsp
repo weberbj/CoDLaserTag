@@ -12,7 +12,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <% 
-    List<GameEntity> gamesList = GameServer.getInstance().getGameEntities(); 
+    List<GameEntity> gamesList = GameServer.getGameEntities(); 
 %>
 
 <!DOCTYPE html>
