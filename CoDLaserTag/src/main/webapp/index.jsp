@@ -26,23 +26,26 @@
         <p>
             There are <%= gamesList.size() %> game(s) in session
         </p>
-        <table>
-            <tr>
-                <td>Server name</td>
-                <td>Game Type</td>
-                <td># of Players</td>
-                <td>Game ID</td>
-            </tr>
-            <% for (GameEntity ge : gamesList)   { %>
-            <tr>
-                <td><%= ge.getGameName() %></td>
-                <td><%= ge.getGameTypeName() %></td>
-                <td><%= ge.getNumPlayers() %></td>
-                <td><%= ge.getId() %></td>
-            </tr>
-            <% } %>
-            
-        </table>
+        <form action="playgame.jsp" method="GET">
+            <table>
+                <tr>
+                    <td></td>
+                    <td>Server name</td>
+                    <td>Game Type</td>
+                    <td># of Players</td>
+                </tr>
+                <% for (GameEntity ge : gamesList)   { %>
+                <tr>
+                    <td><input type="radio" name="gameId" value="<%= ge.getId() %>" /></td>
+                    <td><%= ge.getGameName() %></td>
+                    <td><%= ge.getGameTypeName() %></td>
+                    <td><%= ge.getNumPlayers() %></td>
+                </tr>
+                <% } %>
+
+            </table>
+                <input type="submit" value="Join Game" />
+        </form>
 
         <br />
         Create a new Game
@@ -51,7 +54,7 @@
             Game Type: <select name="gametype">
                 <option value="humansvszombies">Humans vs Zombies</option>
             </select>
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Create Game" />
         </form>
         
     </body>
