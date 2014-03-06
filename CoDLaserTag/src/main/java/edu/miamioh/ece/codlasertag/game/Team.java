@@ -16,7 +16,8 @@ import java.util.HashSet;
  * @author kylerogers
  */
 public class Team {
-    private final Set<Player> players;
+    //For now set to public,
+    public Set<Player> players;
     private String name;
     
     public Team(String name)   {
@@ -51,4 +52,5 @@ public class Team {
     public void removePlayer(Player p)  {
         players.remove(p);
     }
+    
 }
