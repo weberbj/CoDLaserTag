@@ -17,7 +17,7 @@ import javax.websocket.Session;
  */
 public class GameServer {
     
-    private static final GameServer instance = new GameServer();
+    private static final GameServer _instance = new GameServer();
     private final Map<Integer, Game> gamesInSession;
     private static final Random rnd = new Random();
     private final Map<Session, Integer> activeSessions;
@@ -26,7 +26,7 @@ public class GameServer {
 
 
     public static GameServer getInstance() {
-        return instance;
+        return _instance;
     }
     
     private GameServer()    {
@@ -35,19 +35,19 @@ public class GameServer {
         sessionsToId = Collections.synchronizedMap(new HashMap<Session, Player>());
     }
     
-    public Game getGameById(int id)  {
-        return gamesInSession.get(id);
+    public static Game getGameById(int id)  {
+        return getInstance().gamesInSession.get(id);
     }
     
-    public int size()   {
-        return gamesInSession.size();
+    public static int size()   {
+        return getInstance().gamesInSession.size();
     }
     
-    public List<GameEntity> getGameEntities()   {
+    public static List<GameEntity> getGameEntities()   {
         List<GameEntity> games = new ArrayList<>();
         Collection<Integer> gamesToRemove = new HashSet<>();
-        for (Integer key : gamesInSession.keySet()) {
-            Game g = gamesInSession.get(key);
+        for (Integer key : getInstance().gamesInSession.keySet()) {
+            Game g = getInstance().gamesInSession.get(key);
             if (System.currentTimeMillis() > GAME_TIMEOUT + g.getLastUpdated()) {
                 gamesToRemove.add(key);
             }
@@ -56,7 +56,7 @@ public class GameServer {
             }
         }
         for (Integer k : gamesToRemove) {
-            this.removeGame(k);
+            getInstance().removeGame(k);
         }
         return games;
     }
@@ -66,45 +66,47 @@ public class GameServer {
      * @param game Game to be added
      * @return The ID that the server will identify the game by.
      */
-    public int addGame(Game game)    {
+    public static int addGame(Game game)    {
         int id = rnd.nextInt();
         game.setId(id);
         synchronized (GameServer .class)    {
-            while (gamesInSession.containsKey(id))
+            while (getInstance().gamesInSession.containsKey(id))
                 id = rnd.nextInt();
-            gamesInSession.put(id, game);
+            getInstance().gamesInSession.put(id, game);
         }
         return id;
     }
     
-    public boolean removeGame(int id)   {
-        gamesInSession.remove(id);
+    public static boolean removeGame(int id)   {
+        getInstance().gamesInSession.remove(id);
         return true;
     }
     
-    public void connectPlayerToServer(Session s)   {
-        sessionsToId.put(s, new Player());
+    public static void connectPlayerToServer(Session s)   {
+        getInstance().sessionsToId.put(s, new Player());
     }
     
-    private void connectPlayerToGame(Session sess, int gameId)   {
-        gamesInSession.get(gameId).connectPlayer(sess);
-        sessionsToId.remove(sess);
-        activeSessions.put(sess, gameId);
+    private static void connectPlayerToGame(Session sess, int gameId)   {
+        getInstance().gamesInSession.get(gameId).connectPlayer(sess);
+        getInstance().sessionsToId.remove(sess);
+        getInstance().activeSessions.put(sess, gameId);
     }
     
-    public void removePlayerFromGame(Session sess)  {
-        gamesInSession.get(activeSessions.get(sess)).removePlayer(sess);
-        activeSessions.remove(sess);
+    public static void removePlayerFromGame(Session sess)  {
+        getInstance().gamesInSession.get(getInstance().activeSessions.get(sess)).removePlayer(sess);
+        getInstance().activeSessions.remove(sess);
     }
     
-    public String update(Session sess, Player sentPlayerObject) {
-        if (sessionsToId.containsKey(sess))
+    public static String update(Session sess, Player sentPlayerObject) {
+        if (getInstance().sessionsToId.containsKey(sess))
             connectPlayerToGame(sess, sentPlayerObject.getGameId());
         return updateGame(sess, sentPlayerObject);
     }
     
-    private String updateGame(Session sess, Player sentPlayerObject)    {
-        return gamesInSession.get(activeSessions.get(sess)).update(sess, sentPlayerObject);
+    private static String updateGame(Session sess, Player sentPlayerObject)    {
+        return getInstance().gamesInSession.get(
+                getInstance().activeSessions.get(sess)
+            ).update(sess, sentPlayerObject);
     }
     
 }
