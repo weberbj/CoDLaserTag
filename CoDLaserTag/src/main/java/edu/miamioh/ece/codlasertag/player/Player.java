@@ -5,6 +5,7 @@
 package edu.miamioh.ece.codlasertag.player;
 
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -26,6 +27,7 @@ public class Player implements Comparable<Player>   {
                 .add("team", team)
                 .add("health", health)
                 .add("coords", coord.getJson())
+                .add("id", id)
                 .build();
     }
 
