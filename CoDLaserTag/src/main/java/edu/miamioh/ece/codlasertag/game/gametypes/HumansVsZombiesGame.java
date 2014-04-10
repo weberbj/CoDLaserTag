@@ -22,7 +22,7 @@ public class HumansVsZombiesGame extends Game {
     
     public static final String ZOMBIES = "zombies";
     public static final String HUMANS = "humans";
-    public static final int RATIO = 1/6;
+    public static final double RATIO = 6.0; // Humans to Zombies ratio
     public static final double CHECK_DISTANCE = 10.0; //In Meters
     public static final String GAME_TYPE = "Humans vs Zombies";
     
@@ -37,7 +37,7 @@ public class HumansVsZombiesGame extends Game {
         if(gameOver()){
             //DO SOMETHING HERE TO STOP GAME
         }
-        checkDistance();
+     //   checkDistance();
     }
     
     void checkDistance(){
@@ -58,11 +58,7 @@ public class HumansVsZombiesGame extends Game {
     }
     
     boolean gameOver(){
-        if(teams.get(HUMANS).players.isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
+        return (teams.get(HUMANS).players.isEmpty());
     }
     
     private double gps2m(double lat_a, double lng_a, double lat_b, double lng_b) {
@@ -85,13 +81,23 @@ public class HumansVsZombiesGame extends Game {
     //Fow now uses a simple ratio defined as a constant above, RATIO.
     @Override
     protected void assignTeam(edu.miamioh.ece.codlasertag.player.Player player){
-        if(teams.get(HUMANS).size() != 0 && (double)teams.get(ZOMBIES).size()/(double)teams.get(HUMANS).size() < RATIO){
-            player.setTeam(ZOMBIES);
-            teams.get(ZOMBIES).addPlayer(player);
-        }else{
-            player.setTeam(HUMANS);
-            teams.get(HUMANS).addPlayer(player);
+        String teamName;
+        if (teams.get(HUMANS).size() == 0)  {
+            teamName = HUMANS;
         }
+        else if (teams.get(ZOMBIES).size() == 0)    {
+            teamName = ZOMBIES;
+        }
+        else if ( (double) teams.get(HUMANS).size() / (double) teams.get(ZOMBIES).size() > RATIO)    {
+            // Too many humans compared to zombies
+            teamName = ZOMBIES;
+        }
+        else    {
+            teamName = HUMANS;
+        }
+        teams.get(teamName).addPlayer(player);
+        player.setTeam(teamName);
+        System.out.println("Assigned player " + player.getId() + " to team " + teamName);
     }
 
     @Override

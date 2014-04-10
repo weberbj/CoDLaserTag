@@ -35,13 +35,15 @@ function onMessage(evt) {
     else {
         var json = JSON.parse(evt.data);
         updateMap();
-        playerTeam = json[0].team;
-        playerHealth = json[0].health;
-        for (var i = 1 ; i < json.length ; i++) {
-            var otherPlayer = json[i];
-            var coords = otherPlayer.coords;
-            if (otherPlayer.id !== playerId)    {
-                addPlayerToMap(coords.latitude, coords.longitude, otherPlayer.team === playerTeam);
+        for (var i = 0 ; i < json.length ; i++) {
+            var p = json[i];
+            var coords = p.coords;
+            if (String(p.id) !== playerId)    {
+                addPlayerToMap(coords.latitude, coords.longitude, p.team === playerTeam);
+            }
+            else    {// is current player  
+                playerHealth = p.health;
+                playerTeam = p.team;
             }
         }
     }

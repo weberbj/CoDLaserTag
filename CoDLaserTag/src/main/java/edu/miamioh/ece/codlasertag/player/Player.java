@@ -5,6 +5,7 @@
 package edu.miamioh.ece.codlasertag.player;
 
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -21,11 +22,12 @@ public class Player implements Comparable<Player>   {
     JsonObject json;
     private int gameId;
     
-    private void updateJson()   {
+    public void updateJson()   {
         json = Json.createObjectBuilder()
                 .add("team", team)
                 .add("health", health)
                 .add("coords", coord.getJson())
+                .add("id", id)
                 .build();
     }
 
@@ -75,10 +77,6 @@ public class Player implements Comparable<Player>   {
     public JsonObject getJson() {
         updateJson();
         return json;
-    }
-
-    public void setJson(JsonObject json) {
-        this.json = json;
     }
 
     public void setHealth(int health) {

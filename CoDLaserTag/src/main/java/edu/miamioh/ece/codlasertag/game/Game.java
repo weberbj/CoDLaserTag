@@ -84,7 +84,10 @@ public abstract class Game {
         currentPlayer.setCoord(receivedPlayerObject.getCoord());
         currentPlayer.setHealth(receivedPlayerObject.getHealth());
         currentPlayer.setLastUpdate(new Date());
-        currentPlayer.setJson(receivedPlayerObject.getJson());
+        if (!teams.containsKey(receivedPlayerObject.getTeam())) {
+            assignTeam(currentPlayer);
+        }
+        currentPlayer.updateJson();
         players.remove(playerSession);
         players.put(playerSession, currentPlayer);
     }
@@ -128,7 +131,6 @@ public abstract class Game {
             return;
         }
         players.put(playerSession, p);
-        assignTeam(p);
         System.out.println("Player connected to game" + p.getGameId() +  ". # of players: " + players.size());
     }
     
