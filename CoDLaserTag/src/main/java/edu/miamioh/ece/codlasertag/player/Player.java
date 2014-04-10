@@ -22,7 +22,7 @@ public class Player implements Comparable<Player>   {
     JsonObject json;
     private int gameId;
     
-    private void updateJson()   {
+    public void updateJson()   {
         json = Json.createObjectBuilder()
                 .add("team", team)
                 .add("health", health)
@@ -77,10 +77,6 @@ public class Player implements Comparable<Player>   {
     public JsonObject getJson() {
         updateJson();
         return json;
-    }
-
-    public void setJson(JsonObject json) {
-        this.json = json;
     }
 
     public void setHealth(int health) {
