@@ -25,6 +25,8 @@
         <br />
         <div id="output"></div>
         <div id="location"></div>
+        <div id="playerCount"></div>
+        <div id="xy"></div>
         <script type="text/javascript" src="scripts/lib/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="scripts/websocket.js"></script>
         <script type="text/javascript" src="scripts/location.js"></script>

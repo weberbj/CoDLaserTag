@@ -35,6 +35,8 @@ function onMessage(evt) {
     else {
         var json = JSON.parse(evt.data);
         updateMap();
+        document.getElementById("playerCount").innerHTML = "Player Count: " + json.length + "<br />";
+        document.getElementById("xy").innerHTML = "";
         for (var i = 0 ; i < json.length ; i++) {
             var p = json[i];
             var coords = p.coords;
