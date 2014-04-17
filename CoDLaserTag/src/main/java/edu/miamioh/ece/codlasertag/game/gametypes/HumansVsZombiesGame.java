@@ -35,7 +35,7 @@ public class HumansVsZombiesGame extends Game {
     @Override
     protected void updateGame() {
         if(gameOver()){
-            //DO SOMETHING HERE TO STOP GAME
+           super.gameIsOver = true;
         }
      //   checkDistance();
     }

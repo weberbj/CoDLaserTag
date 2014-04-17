@@ -3,9 +3,10 @@
  */
 
 var x = document.getElementById("location");
+var locWatchId;
 function startWatchingLocation()  {
     if (navigator.geolocation)  {
-        navigator.geolocation.watchPosition(listPosition);
+        locWatchId = navigator.geolocation.watchPosition(listPosition);
     }
     else    {
         x.innerHTML="Geolocation is not supported by this browser.";

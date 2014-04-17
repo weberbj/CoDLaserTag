@@ -15,3 +15,11 @@ function sendAndReceiveData()   {
    if (playerCurrentLocation !== null)
         sendText(convertCurrPlayerToJSON());
 }
+
+function endGame(json){
+    document.getElementById("output").innerHTML = json['gameover'];
+    clearInterval(pushInterval);
+    navigator.geolocation.clearWatch(locWatchId);
+    websocket.onclose = function () {}; // disable onclose handler first
+    websocket.close();
+}

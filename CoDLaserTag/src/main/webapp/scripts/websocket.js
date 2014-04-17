@@ -34,6 +34,10 @@ function onMessage(evt) {
     }
     else {
         var json = JSON.parse(evt.data);
+        if (json['gameover'] !== undefined){
+            endGame(json);
+            return;
+        }
         updateMap();
         document.getElementById("playerCount").innerHTML = "Player Count: " + json.length + "<br />";
         document.getElementById("xy").innerHTML = "";
