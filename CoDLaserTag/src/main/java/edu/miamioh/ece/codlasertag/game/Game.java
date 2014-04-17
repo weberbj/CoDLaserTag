@@ -1,12 +1,15 @@
 package edu.miamioh.ece.codlasertag.game;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javax.websocket.Session;
+import javax.json.Json;
+import javax.json.JsonObject;
 
 /**
  * Represents a game session 
@@ -25,6 +28,7 @@ public abstract class Game {
     private static final Random rnd = new Random();
     private long lastUpdated = System.currentTimeMillis();
     private int id;
+    protected boolean gameIsOver = false;
 
     public void setId(int id) {
         this.id = id;
@@ -47,6 +51,9 @@ public abstract class Game {
     public final String update(Session playerSession, edu.miamioh.ece.codlasertag.player.Player receivedPlayerObject) {
         if (!players.containsKey(playerSession))
             return "Error: Player not in session";
+        if (gameIsOver){
+            return gameOver("Game Over");
+        }
         updatePlayer(playerSession, receivedPlayerObject);
         updateGame();
         lastUpdated = System.currentTimeMillis();
@@ -103,6 +110,13 @@ public abstract class Game {
         }
         catch (IOException e) {}
         System.out.println("Player left");
+    }
+    
+    protected String gameOver(String message){
+        JsonObject json = Json.createObjectBuilder()
+                .add("gameover", message)
+                .build();
+        return json.toString();
     }
     
     /**
