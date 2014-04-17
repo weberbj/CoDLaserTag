@@ -8,7 +8,6 @@
 
 package edu.miamioh.ece.codlasertag.game.gametypes;
 
-import java.util.*;
 import edu.miamioh.ece.codlasertag.game.Game;
 import edu.miamioh.ece.codlasertag.game.Team;
 import edu.miamioh.ece.codlasertag.player.Player;
@@ -37,23 +36,22 @@ public class HumansVsZombiesGame extends Game {
         if(gameOver()){
            super.gameIsOver = true;
         }
-     //   checkDistance();
+        checkDistance();
     }
     
     void checkDistance(){
-        for(Iterator it = teams.get(ZOMBIES).players.iterator(); it.hasNext(); ){
-            Player tempZombie = (Player)it.next();
-            Coordinates tempZombieCoor = tempZombie.getCoord();
-           for(Iterator it2 = teams.get(HUMANS).players.iterator(); it2.hasNext();){
-               Player tempHuman = (Player)it.next();
-               Coordinates tempHumanCoor = tempHuman.getCoord();
-               double distanceAway = gps2m(tempZombieCoor.getLatitude(),tempZombieCoor.getLongitude(),
-                     tempHumanCoor.getLatitude(),tempHumanCoor.getLongitude());
-               if(distanceAway < CHECK_DISTANCE){
-                  teams.get(ZOMBIES).addPlayer(tempHuman);
-                  teams.get(HUMANS).removePlayer(tempHuman);
-             }
-           }
+        for(Player zombie : teams.get(ZOMBIES).players ){
+            Coordinates tempZombieCoor = zombie.getCoord();
+            for(Player human : teams.get(HUMANS).players){
+                Coordinates tempHumanCoor = human.getCoord();
+                double distanceAway = gps2m(tempZombieCoor.getLatitude(),tempZombieCoor.getLongitude(),
+                        tempHumanCoor.getLatitude(),tempHumanCoor.getLongitude());
+                if(distanceAway < CHECK_DISTANCE){
+                    human.setTeam(ZOMBIES);
+                    teams.get(ZOMBIES).addPlayer(human);
+                    teams.get(HUMANS).removePlayer(human);
+                }
+            }
         }
     }
     
