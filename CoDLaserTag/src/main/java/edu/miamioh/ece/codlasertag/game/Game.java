@@ -1,7 +1,6 @@
 package edu.miamioh.ece.codlasertag.game;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +9,7 @@ import java.util.Random;
 import javax.websocket.Session;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 /**
  * Represents a game session 
@@ -67,6 +67,7 @@ public abstract class Game {
      */
     String buildJSONArrayString() {
         String rv = "[";
+        rv += buildScoreJson().toString() + ",";
         for (Session s : players.keySet())  {
             edu.miamioh.ece.codlasertag.player.Player readPlayer = players.get(s);
             if ( (new Date().getTime() - readPlayer.getLastUpdate().getTime() ) > TIMEOUT_VAL)    {
@@ -77,6 +78,14 @@ public abstract class Game {
         }
         rv = rv.substring(0,rv.length()-1) + "]";
         return rv;
+    }
+    
+    JsonObject buildScoreJson() {
+        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+        for (Team t : teams.values())  {
+            jsonBuilder.add(t.getName(), t.getScore());
+        }
+        return jsonBuilder.build();
     }
     
     /**

@@ -49,7 +49,9 @@ public class HumansVsZombiesGame extends Game {
                 if(distanceAway < CHECK_DISTANCE){
                     human.setTeam(ZOMBIES);
                     teams.get(ZOMBIES).addPlayer(human);
+                    teams.get(ZOMBIES).setScore(teams.get(ZOMBIES).size());
                     teams.get(HUMANS).removePlayer(human);
+                    teams.get(HUMANS).setScore(teams.get(HUMANS).size());
                 }
             }
         }
@@ -95,6 +97,7 @@ public class HumansVsZombiesGame extends Game {
         }
         teams.get(teamName).addPlayer(player);
         player.setTeam(teamName);
+        teams.get(teamName).setScore(teams.get(teamName).size());
         System.out.println("Assigned player " + player.getId() + " to team " + teamName);
     }
 
