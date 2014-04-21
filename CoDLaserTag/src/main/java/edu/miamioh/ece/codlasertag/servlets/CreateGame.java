@@ -8,9 +8,8 @@ package edu.miamioh.ece.codlasertag.servlets;
 
 import edu.miamioh.ece.codlasertag.game.Game;
 import edu.miamioh.ece.codlasertag.game.GameServer;
-import edu.miamioh.ece.codlasertag.game.gametypes.HumansVsZombiesGame;
+import edu.miamioh.ece.codlasertag.game.gametypes.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -58,6 +57,9 @@ public class CreateGame extends HttpServlet {
 
         if (gameType.equals("humansvszombies"))    {
             gameToBeAdded = new HumansVsZombiesGame(gameName);
+        }
+        else if (gameType.equals("freeroam"))   {
+            gameToBeAdded = new FreeRoamGame(gameName);
         }
         else    {
             return;

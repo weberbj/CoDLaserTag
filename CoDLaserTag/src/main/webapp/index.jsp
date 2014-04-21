@@ -53,6 +53,7 @@
             Game Name: <input type="text" name="gamename" />
             Game Type: <select name="gametype">
                 <option value="humansvszombies">Humans vs Zombies</option>
+                <option value="freeroam">Free Roam</option>
             </select>
             <input type="submit" value="Create Game" />
         </form>
