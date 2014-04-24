@@ -25,7 +25,18 @@ function onError(evt)   {
 }
 
 function sendText(json) {
-    websocket.send(json);
+    if (websocket.readyState !== 3) {
+        websocket.send(json);
+    }
+    else    {
+        document.getElementById("output").innerHTML = "Lost connection to the server";
+        document.getElementById("xy").innerHTML = "";
+        document.getElementById("playerCount").innerHTML = "";
+        document.getElementById("location").innerHTML = "";
+        clearInterval(pushInterval);
+        navigator.geolocation.clearWatch(locWatchId);
+    }
+    
 }
 
 function onMessage(evt) {
