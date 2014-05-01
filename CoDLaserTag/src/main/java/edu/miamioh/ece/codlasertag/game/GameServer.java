@@ -56,7 +56,7 @@ public class GameServer {
             }
         }
         for (Integer k : gamesToRemove) {
-            getInstance().removeGame(k);
+            removeGame(k);
         }
         return games;
     }
