@@ -62,25 +62,28 @@
                         <h4>There are <%= gamesList.size() %> game(s) in session</h4>
                     </div>
                     <div class="container ">
-                    <form action="playgame.jsp" method="GET">
-                        <div class="row centered">
-                            
-                            Server name |
-                            Game Type |
-                            # of Players
-                        </div>
-                        <% for (GameEntity ge : gamesList)   { %>
+                        <% if (gamesList.size() > 0 )   { %>
+                        <form action="playgame.jsp" method="GET">
                             <div class="row centered">
-                                    <input type="radio" name="gameId" value="<%= ge.getId() %>" />
-                                <%= ge.getGameName() %> |
-                                <%= ge.getGameTypeName() %> |
-                                <%= ge.getNumPlayers() %>
+
+                                Server name |
+                                Game Type |
+                                # of Players
                             </div>
-                        <% } %>
+                            <% for (GameEntity ge : gamesList)   { %>
+                                <div class="row centered">
+                                        <input type="radio" name="gameId" value="<%= ge.getId() %>" />
+                                    <%= ge.getGameName() %> |
+                                    <%= ge.getGameTypeName() %> |
+                                    <%= ge.getNumPlayers() %>
+                                </div>
+                            <% } %>
 
                             <input type="submit" value="Join Game" />
 
+
                     </form>
+                         <% } %>
                     </div>
                 </div>
                 <div class="row centered">
