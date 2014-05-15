@@ -19,10 +19,24 @@ public class Team {
     //For now set to public,
     public Set<Player> players;
     private String name;
+    private int score;
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore(int score) {
+        this.score += score;
+    }
     
     public Team(String name)   {
         this.name = name;
         players = new HashSet<>();
+        score = 0;
     }
     
     public Team(String name, Collection<Player> initialPlayers)    {

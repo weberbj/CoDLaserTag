@@ -8,7 +8,6 @@
 
 package edu.miamioh.ece.codlasertag.game.gametypes;
 
-import java.util.*;
 import edu.miamioh.ece.codlasertag.game.Game;
 import edu.miamioh.ece.codlasertag.game.Team;
 import edu.miamioh.ece.codlasertag.player.Player;
@@ -22,7 +21,7 @@ public class HumansVsZombiesGame extends Game {
     
     public static final String ZOMBIES = "zombies";
     public static final String HUMANS = "humans";
-    public static final int RATIO = 1/6;
+    public static final double RATIO = 6.0; // Humans to Zombies ratio
     public static final double CHECK_DISTANCE = 10.0; //In Meters
     public static final String GAME_TYPE = "Humans vs Zombies";
     
@@ -35,34 +34,31 @@ public class HumansVsZombiesGame extends Game {
     @Override
     protected void updateGame() {
         if(gameOver()){
-            //DO SOMETHING HERE TO STOP GAME
+           super.gameIsOver = true;
         }
         checkDistance();
     }
     
     void checkDistance(){
-        for(Iterator it = teams.get(ZOMBIES).players.iterator(); it.hasNext(); ){
-            Player tempZombie = (Player)it.next();
-            Coordinates tempZombieCoor = tempZombie.getCoord();
-           for(Iterator it2 = teams.get(HUMANS).players.iterator(); it2.hasNext();){
-               Player tempHuman = (Player)it.next();
-               Coordinates tempHumanCoor = tempHuman.getCoord();
-               double distanceAway = gps2m(tempZombieCoor.getLatitude(),tempZombieCoor.getLongitude(),
-                     tempHumanCoor.getLatitude(),tempHumanCoor.getLongitude());
-               if(distanceAway < CHECK_DISTANCE){
-                  teams.get(ZOMBIES).addPlayer(tempHuman);
-                  teams.get(HUMANS).removePlayer(tempHuman);
-             }
-           }
+        for(Player zombie : teams.get(ZOMBIES).players ){
+            Coordinates tempZombieCoor = zombie.getCoord();
+            for(Player human : teams.get(HUMANS).players){
+                Coordinates tempHumanCoor = human.getCoord();
+                double distanceAway = gps2m(tempZombieCoor.getLatitude(),tempZombieCoor.getLongitude(),
+                        tempHumanCoor.getLatitude(),tempHumanCoor.getLongitude());
+                if(distanceAway < CHECK_DISTANCE){
+                    human.setTeam(ZOMBIES);
+                    teams.get(ZOMBIES).addPlayer(human);
+                    teams.get(ZOMBIES).setScore(teams.get(ZOMBIES).size());
+                    teams.get(HUMANS).removePlayer(human);
+                    teams.get(HUMANS).setScore(teams.get(HUMANS).size());
+                }
+            }
         }
     }
     
     boolean gameOver(){
-        if(teams.get(HUMANS).players.isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
+        return (teams.get(HUMANS).players.isEmpty());
     }
     
     private double gps2m(double lat_a, double lng_a, double lat_b, double lng_b) {
@@ -85,13 +81,24 @@ public class HumansVsZombiesGame extends Game {
     //Fow now uses a simple ratio defined as a constant above, RATIO.
     @Override
     protected void assignTeam(edu.miamioh.ece.codlasertag.player.Player player){
-        if(teams.get(HUMANS).size() != 0 && (double)teams.get(ZOMBIES).size()/(double)teams.get(HUMANS).size() < RATIO){
-            player.setTeam(ZOMBIES);
-            teams.get(ZOMBIES).addPlayer(player);
-        }else{
-            player.setTeam(HUMANS);
-            teams.get(HUMANS).addPlayer(player);
+        String teamName;
+        if (teams.get(HUMANS).size() == 0)  {
+            teamName = HUMANS;
         }
+        else if (teams.get(ZOMBIES).size() == 0)    {
+            teamName = ZOMBIES;
+        }
+        else if ( (double) teams.get(HUMANS).size() / (double) teams.get(ZOMBIES).size() > RATIO)    {
+            // Too many humans compared to zombies
+            teamName = ZOMBIES;
+        }
+        else    {
+            teamName = HUMANS;
+        }
+        teams.get(teamName).addPlayer(player);
+        player.setTeam(teamName);
+        teams.get(teamName).setScore(teams.get(teamName).size());
+        System.out.println("Assigned player " + player.getId() + " to team " + teamName);
     }
 
     @Override

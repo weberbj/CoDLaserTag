@@ -32,6 +32,7 @@ function addPlayerToMap(latitude, longitude, friendly)   {
             "y":y
         }
     });
+    document.getElementById("xy").innerHTML += "Player at (" + x + ", " + y + ")<br />";
     drawImageText(json);
 }
 

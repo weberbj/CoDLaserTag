@@ -25,7 +25,18 @@ function onError(evt)   {
 }
 
 function sendText(json) {
-    websocket.send(json);
+    if (websocket.readyState === 1) {
+        websocket.send(json);
+    }
+    else    {
+        document.getElementById("output").innerHTML = "Not connected to the server";
+        document.getElementById("xy").innerHTML = "";
+        document.getElementById("playerCount").innerHTML = "";
+        document.getElementById("location").innerHTML = "";
+        clearInterval(pushInterval);
+        navigator.geolocation.clearWatch(locWatchId);
+    }
+    
 }
 
 function onMessage(evt) {
@@ -34,14 +45,29 @@ function onMessage(evt) {
     }
     else {
         var json = JSON.parse(evt.data);
+        if (json['gameover'] !== undefined){
+            endGame(json);
+            return;
+        }
         updateMap();
-        playerTeam = json[0].team;
-        playerHealth = json[0].health;
+        document.getElementById("playerCount").innerHTML = "Player Count: " + (json.length-1) + "<br />";
+        document.getElementById("xy").innerHTML = "";
+        var scores = [];
+        for (var team in json[0])   {
+            scores.push(team + ": " + json[0][team]);
+        }
+        var scoreStr = scores.join(" - ");
+        document.getElementById("output").innerHTML = scoreStr;
         for (var i = 1 ; i < json.length ; i++) {
-            var otherPlayer = json[i];
-            var coords = otherPlayer.coords;
-            if (otherPlayer.id !== playerId)    {
-                addPlayerToMap(coords.latitude, coords.longitude, otherPlayer.team === playerTeam);
+            var p = json[i];
+            var coords = p.coords;
+            if (String(p.id) !== playerId)    {
+                addPlayerToMap(coords.latitude, coords.longitude, p.team === playerTeam);
+            }
+            else    {// is current player  
+                playerHealth = p.health;
+                playerTeam = p.team;
+                document.getElementById("teamLoc").innerHTML = "Your team: " + playerTeam;
             }
         }
     }

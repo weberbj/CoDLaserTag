@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javax.websocket.Session;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 /**
  * Represents a game session 
@@ -25,6 +28,7 @@ public abstract class Game {
     private static final Random rnd = new Random();
     private long lastUpdated = System.currentTimeMillis();
     private int id;
+    protected boolean gameIsOver = false;
 
     public void setId(int id) {
         this.id = id;
@@ -47,6 +51,9 @@ public abstract class Game {
     public final String update(Session playerSession, edu.miamioh.ece.codlasertag.player.Player receivedPlayerObject) {
         if (!players.containsKey(playerSession))
             return "Error: Player not in session";
+        if (gameIsOver){
+            return gameOver("Game Over");
+        }
         updatePlayer(playerSession, receivedPlayerObject);
         updateGame();
         lastUpdated = System.currentTimeMillis();
@@ -60,6 +67,7 @@ public abstract class Game {
      */
     String buildJSONArrayString() {
         String rv = "[";
+        rv += buildScoreJson().toString() + ",";
         for (Session s : players.keySet())  {
             edu.miamioh.ece.codlasertag.player.Player readPlayer = players.get(s);
             if ( (new Date().getTime() - readPlayer.getLastUpdate().getTime() ) > TIMEOUT_VAL)    {
@@ -70,6 +78,14 @@ public abstract class Game {
         }
         rv = rv.substring(0,rv.length()-1) + "]";
         return rv;
+    }
+    
+    JsonObject buildScoreJson() {
+        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+        for (Team t : teams.values())  {
+            jsonBuilder.add(t.getName(), t.getScore());
+        }
+        return jsonBuilder.build();
     }
     
     /**
@@ -84,7 +100,10 @@ public abstract class Game {
         currentPlayer.setCoord(receivedPlayerObject.getCoord());
         currentPlayer.setHealth(receivedPlayerObject.getHealth());
         currentPlayer.setLastUpdate(new Date());
-        currentPlayer.setJson(receivedPlayerObject.getJson());
+        if (!teams.containsKey(receivedPlayerObject.getTeam())) {
+            assignTeam(currentPlayer);
+        }
+        currentPlayer.updateJson();
         players.remove(playerSession);
         players.put(playerSession, currentPlayer);
     }
@@ -100,6 +119,13 @@ public abstract class Game {
         }
         catch (IOException e) {}
         System.out.println("Player left");
+    }
+    
+    protected String gameOver(String message){
+        JsonObject json = Json.createObjectBuilder()
+                .add("gameover", message)
+                .build();
+        return json.toString();
     }
     
     /**
@@ -128,7 +154,6 @@ public abstract class Game {
             return;
         }
         players.put(playerSession, p);
-        assignTeam(p);
         System.out.println("Player connected to game" + p.getGameId() +  ". # of players: " + players.size());
     }
     
