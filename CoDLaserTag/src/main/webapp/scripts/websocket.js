@@ -25,11 +25,11 @@ function onError(evt)   {
 }
 
 function sendText(json) {
-    if (websocket.readyState !== 3) {
+    if (websocket.readyState === 1) {
         websocket.send(json);
     }
     else    {
-        document.getElementById("output").innerHTML = "Lost connection to the server";
+        document.getElementById("output").innerHTML = "Not connected to the server";
         document.getElementById("xy").innerHTML = "";
         document.getElementById("playerCount").innerHTML = "";
         document.getElementById("location").innerHTML = "";
@@ -67,6 +67,7 @@ function onMessage(evt) {
             else    {// is current player  
                 playerHealth = p.health;
                 playerTeam = p.team;
+                document.getElementById("teamLoc").innerHTML = "Your team: " + playerTeam;
             }
         }
     }

@@ -43,6 +43,7 @@
         </div>
         <br />
         <div class="container centered">
+            <div id="teamLoc"></div>
             <div id="output"></div>
             <div id="location"></div>
             <div id="playerCount"></div>
